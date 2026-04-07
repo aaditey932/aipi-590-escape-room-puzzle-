@@ -1,0 +1,18 @@
+# ── GPIO Pin Assignments ──────────────────────────────────────────
+KEYPAD_ROWS    = [18, 23, 24, 25]      # BCM GPIO pins for rows
+KEYPAD_COLS    = [4,  17, 27, 22]      # BCM GPIO pins for cols
+
+BUZZER_PIN     = 5
+LED_GREEN_PIN  = 6
+LED_RED_PIN    = 13
+MOTOR_PIN      = 19                    # PWM pin for servo
+
+# ── Game Settings ─────────────────────────────────────────────────
+SECRET_CODE        = "7342"            
+MAX_ATTEMPTS       = 3
+LOCKOUT_SECONDS    = 10
+INPUT_TIMEOUT_SEC  = 30               # Time window to enter full code
+
+# ── Motor Settings ────────────────────────────────────────────────
+DOOR_OPEN_DUTY     = 7.5              # Servo duty cycle ~90°
+DOOR_CLOSED_DUTY   = 2.5             # Servo duty cycle ~0°
