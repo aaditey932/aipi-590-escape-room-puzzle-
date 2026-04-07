@@ -1,0 +1,19 @@
+{
+  "id": "example_plan",
+  "title": "The Truth Matrix (plan example)",
+  "difficulty": 3,
+  "statements": {
+    "A": { "type": "switch_on", "name": "A" },
+    "B": { "type": "switch_on", "name": "A" },
+    "C": { "type": "switch_on", "name": "A" },
+    "D": { "type": "not", "child": { "type": "switch_on", "name": "A" } },
+    "E": { "type": "count_eq", "value": 3 }
+  },
+  "display": {
+    "A": "A is ON.",
+    "B": "A is ON.",
+    "C": "A is ON.",
+    "D": "A is OFF.",
+    "E": "Exactly three switches are ON."
+  }
+}

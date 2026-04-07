@@ -1,0 +1,6 @@
+gpiozero>=2.0
+jsonschema>=4.0
+requests>=2.28
+
+# Optional: OLED (install on Pi when using display)
+# luma.oled>=3.12

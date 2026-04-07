@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/truth-matrix/puzzle.schema.json",
+  "title": "Truth Matrix puzzle",
+  "type": "object",
+  "required": ["id", "statements", "display"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable identifier for this puzzle."
+    },
+    "title": {
+      "type": "string",
+      "description": "Human-readable title."
+    },
+    "difficulty": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "1=easiest, 5=hardest (used by generator/hints)."
+    },
+    "statements": {
+      "type": "object",
+      "minProperties": 5,
+      "maxProperties": 5,
+      "propertyNames": {
+        "enum": ["A", "B", "C", "D", "E"]
+      },
+      "additionalProperties": { "$ref": "#/$defs/proposition" }
+    },
+    "display": {
+      "type": "object",
+      "minProperties": 5,
+      "maxProperties": 5,
+      "propertyNames": {
+        "enum": ["A", "B", "C", "D", "E"]
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Short text shown for this switch's clue (not evaluated at runtime)."
+      }
+    }
+  },
+  "$defs": {
+    "proposition": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["type", "name"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "switch_on" },
+            "name": { "enum": ["A", "B", "C", "D", "E"] }
+          },
+          "description": "True iff that physical switch is ON."
+        },
+        {
+          "type": "object",
+          "required": ["type", "child"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "not" },
+            "child": { "$ref": "#/$defs/proposition" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "children"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "enum": ["and", "or"] },
+            "children": {
+              "type": "array",
+              "minItems": 2,
+              "items": { "$ref": "#/$defs/proposition" }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "left", "right"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "xor" },
+            "left": { "$ref": "#/$defs/proposition" },
+            "right": { "$ref": "#/$defs/proposition" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "antecedent", "consequent"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "implies" },
+            "antecedent": { "$ref": "#/$defs/proposition" },
+            "consequent": { "$ref": "#/$defs/proposition" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "a", "b"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "same" },
+            "a": { "enum": ["A", "B", "C", "D", "E"] },
+            "b": { "enum": ["A", "B", "C", "D", "E"] }
+          },
+          "description": "True iff the two switches have the same ON/OFF state."
+        },
+        {
+          "type": "object",
+          "required": ["type", "value"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "count_eq" },
+            "value": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 5
+            }
+          },
+          "description": "True iff exactly `value` switches are ON."
+        }
+      ]
+    }
+  }
+}
